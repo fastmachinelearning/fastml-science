@@ -1,0 +1,16 @@
+model:
+  name: float
+  l1: 0.0001
+  shape:
+    - 64
+    - 32
+    - 32
+fit:
+  batch_size: 1024
+  compile:
+    loss: 'categorical_crossentropy'
+    optimizer: adam
+  epochs: 100
+  shuffle: True
+  validation_split: 0.25
+  model_directory: './model/baseline/'
