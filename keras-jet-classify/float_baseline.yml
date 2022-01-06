@@ -13,4 +13,5 @@ fit:
   epochs: 100
   shuffle: True
   validation_split: 0.25
+  verbose: True
   model_directory: './model/baseline/'
