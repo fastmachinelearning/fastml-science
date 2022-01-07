@@ -1,0 +1,16 @@
+name: fmlscience
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - matplotlib
+    - numpy
+    - PyYAML
+    - scikit-learn
+    - tensorflow
+    - tqdm
+    - pandas
+    - git+https://github.com/google/qkeras#egg=qkeras
+    - git+https://github.com/kentaroy47/keras-Opcounter
