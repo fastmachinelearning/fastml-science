@@ -7,7 +7,7 @@ Pytorch implementations of the FML-Science models, including a standard Pytorch 
 Python 3.7
 
 ```
-pip install -r requirements.txt
+conda env create -f environment.yml
 ```
 
 ## Training:
