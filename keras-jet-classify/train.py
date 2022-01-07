@@ -1,6 +1,5 @@
 import argparse
 import numpy as np
-import plotting
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_auc_score
@@ -11,7 +10,6 @@ import tools
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 os.environ["CUDA_VISIBLE_DEVICES"]="-1"
 import tensorflow as tf
-from tensorflow.keras.optimizers import Adam
 
 def main(args):
     param = tools.yaml_load(args.config)
@@ -74,7 +72,7 @@ def main(args):
     csv_lines.append(['AUC:', auc])
 
     #plot and save metrics 
-    plotting.makeRoc(y_test, y_pred, le_classes, save_dir='{}/keras_roc_curve'.format(model_save_path))
+    tools.makeRoc(y_test, y_pred, le_classes, save_dir='{}/keras_roc_curve'.format(model_save_path))
 
     result_path = "{}/result.csv".format(model_save_path)
 
