@@ -1,3 +1,7 @@
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.utils import to_categorical
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.datasets import fetch_openml
 def load_data():
     data = fetch_openml('hls4ml_lhc_jets_hlf')
     X, y = data['data'], data['target']

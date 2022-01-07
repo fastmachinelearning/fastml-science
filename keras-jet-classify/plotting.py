@@ -1,8 +1,9 @@
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, auc
 import pandas as pd
-from sklearn.metrics import confusion_matrix
 import itertools
 
 # confusion matrix code from Maurizio
@@ -38,7 +39,7 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
 
-def plotRoc(fpr, tpr, auc, labels, linestyle, legend=True):
+def plotRoc(fpr, tpr, auc, labels, linestyle, legend=True, save_dir=None):
     for i, label in enumerate(labels):
         plt.plot(tpr[label],fpr[label],label='%s tagger, AUC = %.1f%%'%(label.replace('j_',''),auc[label]*100.),linestyle=linestyle)
     plt.semilogy()
@@ -48,6 +49,8 @@ def plotRoc(fpr, tpr, auc, labels, linestyle, legend=True):
     plt.grid(True)
     if legend: plt.legend(loc='upper left')
     plt.figtext(0.25, 0.90,'hls4ml',fontweight='bold', wrap=True, horizontalalignment='right', fontsize=14)
+    if save_dir:
+        plt.savefig(save_dir)
 
 def rocData(y, predict_test, labels):
 
@@ -66,12 +69,12 @@ def rocData(y, predict_test, labels):
         auc1[label] = auc(fpr[label], tpr[label])
     return fpr, tpr, auc1
 
-def makeRoc(y, predict_test, labels, linestyle='-', legend=True):
+def makeRoc(y, predict_test, labels, linestyle='-', legend=True, save_dir=None):
 
     if 'j_index' in labels: labels.remove('j_index')
         
     fpr, tpr, auc1 = rocData(y, predict_test, labels)
-    plotRoc(fpr, tpr, auc1, labels, linestyle, legend=legend)
+    plotRoc(fpr, tpr, auc1, labels, linestyle, legend=legend, save_dir=save_dir)
     return predict_test
 
 def print_dict(d, indent=0):
