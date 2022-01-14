@@ -34,4 +34,4 @@ python3 train.py -c float_baseline.yml
 ```
 python3 train.py -c float_baseline.yml
 ```
-![Alt text](keras-jet-/model/quantized_baseline/keras_roc_curve.png?raw=true "Quantized Baseline ROC Curve")
+![Alt text](keras-jet-classify/model/quantized_baseline/keras_roc_curve.png?raw=true "Quantized Baseline ROC Curve")
