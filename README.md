@@ -1,5 +1,8 @@
 # Fast Machine Learning in Science
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Keras implementations of the FML-Science models, including a standard Keras (float) and  QKeras implementations.
+
 
 # keras-jet-classify
 
