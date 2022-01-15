@@ -8,7 +8,6 @@ import jet_tagger_model
 import data
 import tools
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-os.environ["CUDA_VISIBLE_DEVICES"]="-1"
 import tensorflow as tf
 
 def main(args):
@@ -33,6 +32,7 @@ def main(args):
     print('# MODEL SUMMARY #')
     print('#################')
     print(model.summary())
+    bops = tools.calc_BOPS(model, input_data_precision=32)
     print('#################')
 
     # declare necessary callbacks
@@ -73,6 +73,10 @@ def main(args):
 
     #plot and save metrics 
     tools.makeRoc(y_test, y_pred, le_classes, save_dir='{}/keras_roc_curve'.format(model_save_path))
+
+    # append BOPS metric to csv_lines
+    csv_lines.append(['BOPS:', bops])
+
 
     result_path = "{}/result.csv".format(model_save_path)
 

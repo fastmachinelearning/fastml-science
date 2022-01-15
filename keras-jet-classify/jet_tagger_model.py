@@ -26,15 +26,15 @@ def get_float_model(shape = [64,32,32], **kwargs):
 
     # create a dense blocks
     model.add(Dense(64, input_shape=(16,), name='fc1', kernel_initializer='lecun_uniform', kernel_regularizer=l1(0.0001)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(name='batch_norm1'))
     model.add(Activation(activation='relu', name='relu1'))
 
     model.add(Dense(32, name=f'fc2', kernel_initializer='lecun_uniform', kernel_regularizer=l1(0.0001)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(name='batch_norm2'))
     model.add(Activation(activation='relu', name=f'relu2'))
 
     model.add(Dense(32, name=f'fc3', kernel_initializer='lecun_uniform', kernel_regularizer=l1(0.0001)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(name='batch_norm3'))
     model.add(Activation(activation='relu', name=f'relu3'))
 
     # declare softmax/output layer
@@ -52,20 +52,20 @@ def get_quantized_model(shape = [64,32,32], fc_bits=6, fc_int_bits=0, relu_bits=
     model.add(QDense(64, input_shape=(16,), name='fc1',
                     kernel_quantizer=quantized_bits(fc_bits,fc_int_bits,alpha=1), bias_quantizer=quantized_bits(fc_bits,fc_int_bits,alpha=1),
                     kernel_initializer='lecun_uniform', kernel_regularizer=l1(0.0001)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(name='batch_norm1'))
     model.add(QActivation(activation=quantized_relu(relu_bits), name='relu1'))
 
 
     model.add(QDense(32, name=f'fc2',
                     kernel_quantizer=quantized_bits(fc_bits,fc_int_bits,alpha=1), bias_quantizer=quantized_bits(fc_bits,fc_int_bits,alpha=1),
                     kernel_initializer='lecun_uniform', kernel_regularizer=l1(0.0001)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(name='batch_norm2'))
     model.add(QActivation(activation=quantized_relu(6), name=f'relu2'))
 
     model.add(QDense(32, name=f'fc3',
                     kernel_quantizer=quantized_bits(fc_bits,fc_int_bits,alpha=1), bias_quantizer=quantized_bits(fc_bits,fc_int_bits,alpha=1),
                     kernel_initializer='lecun_uniform', kernel_regularizer=l1(0.0001)))
-    model.add(BatchNormalization())
+    model.add(BatchNormalization(name='batch_norm3'))
     model.add(QActivation(activation=quantized_relu(6), name=f'relu3'))
 
     # declare softmax/output layer

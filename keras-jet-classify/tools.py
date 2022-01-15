@@ -1,5 +1,11 @@
 import yaml
 import csv
+import math
+import tensorflow.keras as keras
+from tensorflow.keras.layers import Dense, Activation, BatchNormalization
+from tensorflow.keras.regularizers import l1
+from qkeras.qlayers import QDense, QActivation
+from qkeras.utils import _add_supported_quantized_objects
 
 def yaml_load(config):
     with open(config) as stream:
@@ -99,3 +105,36 @@ def print_dict(d, indent=0):
             print_dict(value, indent+1)
         else:
             print(':' + ' ' * (20 - len(key) - 2 * indent) + str(value))
+
+def load_model(file_path):
+    '''
+    load keras model using keras.models.load_model
+    '''
+    co = {}
+    _add_supported_quantized_objects(co)
+    return keras.models.load_model(file_path, custom_objects=co)
+
+def calc_BOPS(model, input_data_precision=32,):
+    '''
+    calculate number of bit operations during forward pass through through the MLP
+    assuming:
+         b_a is the output bitwidth of the last layer/input
+         b_w is the current layer's bitwidth
+         n - layer input nodes
+         m - layer output nodes
+    '''
+    last_bit_width = input_data_precision
+    total_BOPS = 0
+    for layer in model.layers:
+        if isinstance(layer, QDense) or isinstance(layer, Dense):
+            b_a = last_bit_width
+            b_w = layer.get_quantizers()[0].get_config()['bits'] if isinstance(layer, QDense)  else 32
+            n = layer.input.get_shape()[1]
+            m = layer.output.get_shape()[1]
+            p = 1 # fraction of layer remaining after pruning
+            module_BOPS = m * n * (p * b_a * b_w + b_a + b_w + math.log2(n))
+            print("{} BOPS: {} = {}*{}({}*{}*{} + {} + {} + {})".format(layer.name,module_BOPS,m,n,p,b_a,b_w,b_a,b_w,math.log2(n)))
+            last_bit_width = b_w
+            total_BOPS += module_BOPS
+    print("Total BOPS: {}".format(total_BOPS))
+    return total_BOPS
