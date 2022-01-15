@@ -1,5 +1,8 @@
 # Fast Machine Learning in Science
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Keras implementations of the FML-Science models, including a standard Keras (float) and  QKeras implementations.
+
 
 # keras-jet-classify
 
@@ -13,7 +16,7 @@ conda env create -f environment.yml
 ## Training:
 
 ```
-python3 train.py -c <config.yml>>
+python3 train.py -c <config.yml>
 ```
 
 Upon training completion, graphs for the ROC for each tagger, are saved to the output directory, along with a .h5 saved model file. 
