@@ -9,6 +9,8 @@ model:
     fc_bits: None
     fc_int_bits: None
     relu_bits: None
+    input_bits: None
+    input_int_bits: None
 fit:
   batch_size: 1024
   compile:
