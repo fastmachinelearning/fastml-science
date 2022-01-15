@@ -16,7 +16,7 @@ conda env create -f environment.yml
 ## Training:
 
 ```
-python3 train.py -c <config.yml>>
+python3 train.py -c <config.yml>
 ```
 
 Upon training completion, graphs for the ROC for each tagger, are saved to the output directory, along with a .h5 saved model file. 
