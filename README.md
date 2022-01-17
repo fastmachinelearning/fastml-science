@@ -1,13 +1,12 @@
 # Fast Machine Learning in Science
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Keras implementations of the FML-Science models, including a standard Keras (float) and  QKeras implementations.
+Implementations of the `fastml-science` benchmark models, including a standard Keras (float) and QKeras (quantized) implementations.
 
-
-# keras-jet-classify
+# jet-classify
 
 ## Requirements:
-Python 3.7
+Python 3.8
 
 ```
 conda env create -f environment.yml
