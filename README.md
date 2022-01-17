@@ -1,4 +1,5 @@
 # Fast Machine Learning Science Benchmarks
+[![DOI](https://zenodo.org/badge/445208377.svg)](https://zenodo.org/badge/latestdoi/445208377)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Implementations of the `fastml-science` benchmark models, including a standard Keras (float) and QKeras (quantized) implementations.
