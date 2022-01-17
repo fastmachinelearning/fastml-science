@@ -29,11 +29,11 @@ The benchmark includes a float/unquantized 3 layer model as well as a uniformall
 ```
 python3 train.py -c float_baseline.yml
 ```
-![Alt text](keras-jet-classify/model/float_baseline/keras_roc_curve.png?raw=true "Float Baseline ROC Curve")
+![Alt text](jet-classify/model/float_baseline/keras_roc_curve.png?raw=true "Float Baseline ROC Curve")
 
 ### Training Quantized Baseline:
 
 ```
 python3 train.py -c float_baseline.yml
 ```
-![Alt text](keras-jet-classify/model/quantized_baseline/keras_roc_curve.png?raw=true "Quantized Baseline ROC Curve")
+![Alt text](jet-classify/model/quantized_baseline/keras_roc_curve.png?raw=true "Quantized Baseline ROC Curve")
