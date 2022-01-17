@@ -16,7 +16,11 @@ def main(args):
     param = tools.yaml_load(args.config)
 
     # Fetch the jet tagging dataset from Open ML
-    X_train, X_test, y_train, y_test, le_classes = data.load_data()
+    input_bits = param["model"]["quantization"]["input_bits"]
+    input_int_bits = param["model"]["quantization"]["input_int_bits"]
+    X_train, X_test, y_train, y_test, le_classes = data.load_data(
+        bits=input_bits, int_bits=input_int_bits
+    )
     print("train dataset size: " + str(len(X_train)))
     print("test dataset size: " + str(len(X_test)))
 
@@ -128,7 +132,11 @@ if __name__ == "__main__":
         description="Without option argument, it will not run properly."
     )
     parser.add_argument(
-        "-c", "--config", type=str, default="baseline.yml", help="specify yml config"
+        "-c",
+        "--config",
+        type=str,
+        default="float_baseline.yml",
+        help="specify yml config",
     )
     args = parser.parse_args()
     main(args)

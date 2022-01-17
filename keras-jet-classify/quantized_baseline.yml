@@ -9,6 +9,8 @@ model:
     fc_bits: 6
     fc_int_bits: 0
     relu_bits: 6
+    input_bits: 16
+    input_int_bits: 5
 fit:
   batch_size: 1024
   compile:
