@@ -1,0 +1,20 @@
+name: ecoder-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+    - numba
+    - numpy
+    - pandas
+    - matplotlib
+    - pillow
+    - jupyter
+    - tensorflow
+    - keras
+    - qkeras
+    - tensorflow-model-optimization
+    - pot
+    - mplhep
