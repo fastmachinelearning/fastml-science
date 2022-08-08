@@ -10,7 +10,8 @@ from collections import deque
 from keras.models import Model, Sequential
 from keras.layers import Dense, Input, LSTM
 from keras.optimizers import Adam
-
+from qkeras.qlayers import QDense
+from qkeras.qlayers import QActivation 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('RL-Logger')
 logger.setLevel(logging.ERROR)
@@ -52,6 +53,10 @@ class DQN:
             logger.info('Defined Arch Type:{}'.format(self.arch_type))
             self.model = self._build_ensemble(nmodels)
             self.target_model = self._build_ensemble(nmodels)
+        elif self.arch_type == 'MLP_Quantized':
+            logger.info('Using Default Arch Type:{}'.format(self.arch_type))
+            self.model = self._build_quantized_model()
+            self.target_model = self._build_quantized_model()
         else:
             logger.info('Using Default Arch Type:{}'.format(self.arch_type))
             self.model = self._build_model()
@@ -70,6 +75,26 @@ class DQN:
         h3 = Dense(128, activation='relu')(h2)
         # Output: value mapped to action
         output = Dense(self.env.action_space.n, activation='linear')(h3)
+        model = Model(inputs=state_input, outputs=output)
+        adam = Adam(lr=self.learning_rate,
+                    clipnorm=1.0,
+                    clipvalue=0.5)
+        model.compile(loss=tf.keras.losses.Huber(), optimizer=adam)
+        model.summary()
+        return model
+
+    def _build_quantized_model(self):
+        # Input: state
+        state_input = Input(self.env.observation_space.shape)
+        h1 = QDense(128)(state_input)
+        h1 = QActivation('relu')(h1)
+        h2 = QDense(128)(h1)
+        h2 = QActivation('relu')(h2)
+        h3 = QDense(128)(h2)
+        h3 = QActivation('relu')(h3)
+        # Output: value mapped to action
+        h4 = QDense(self.env.action_space.n)(h3)
+        output = QActivation('linear')(h4)
         model = Model(inputs=state_input, outputs=output)
         adam = Adam(lr=self.learning_rate,
                     clipnorm=1.0,

@@ -1,42 +1,23 @@
-## How to use the Dockerfile to setup a podman container:
-
-**NOTE:** _The code in this repository can be used to setup a `podman` image (and container based on the new image)._
-
-#### To install the library run the following steps from your terminal:
-
-1. Pull the package from git via `git clone https://github.com/fermilab-accelerator-ai/control-for-accelerators-in-hep.git`. 
-2. If `git` is not setup on the server, clone it to on the local machine and `scp` the folder to the server (provided you have the requisite privileges).
-
-#### Build a podman image and container using the following steps:
-
-1. Once the directory is set up run ``podman build -t <IMAGE TAG> -v < ABSOLUTE PATH TO THE DIRECTORY ON THE SYSTEM>:<ABSOLUTE PATH TO THE DIRECTORY IN THE CONTAINER> -f Dockerfile .
-``
-2. After building the image you can run it using ``podman run -it -v < ABSOLUTE PATH TO THE DIRECTORY ON THE SYSTEM>:<ABSOLUTE PATH TO THE DIRECTORY IN THE CONTAINER>:z <IMAGE TAG>
-``
-3. If run successfully, you will see a new prompt, for example, ``[root@6ccffd0f6421 /]#``. Type `ls -l` to view the files in the container env. It'll show you all the files on the local directory as we have bind mount the volume of the container to the local.
-4. Training for the agent can be run using ``python3 run_training.py`` and the results of the training will be stored in the local volume mount.
-5. Container can be exported via ``podman export <CONTAINER ID> > <NAME FOR  THE .TAR.GZ FILE>`` to create a copy for file transfer on the local system.
- 
-#### To run a command within an existing container use the following steps:
-
-1. Start the container using `podman start <CONTAINER NAME>`
-2. Execute the command using `podman exec <CONTAINER NAME> <COMMAND>`. For example, `podman execute gmps-ai python3 run_training.py`
+## Create Environment
+### Requirements
 ***
+*python 3.8
+conda env create -f environment.yml
 
-## Additional Notes:
+## Fetch training dataset
+* The `data` folder is empty in the repo, you need the file 'data_release.csv' to run training. 
+* Download ```data_release.csv``` from [BOOSTR: A Dataset for Accelerator Control Systems (Partial Release 2020)](https://zenodo.org/record/4088982#.YhAB-ZPMJAc)
+* Download the data files for each of the following signals: ```['B:VIMIN', 'B:IMINER', 'B_VIMIN', 'B:LINFRQ', 'I:IB', 'I:MDAT40']``` from [BOOSTR: A Dataset for Accelerator Control Systems (Full Release 2020)](https://zenodo.org/record/4382663#.YvFGouzMJQI)
 
-* Software requirements remain the same as the previous version of the code. Existing requirements can be viewed in `requirements.txt` and it ought to be used to install any new software packages.
-* The environemnt framework is built of [OpenAI Gym](https://gym.openai.com/)
-* This is a condensed version of the original code and should not be regarded as the final version.
-* [Podman](https://podman.io/getting-started/) is the drop-in replacement for docker.
-* Currently, the base image for tensorflow used in the container considers that nvidia GPU is setup on your machine.
-* Most global variables that are common throughout the directory are present in `globals.py`. To change the variables, a change must be made in their values in this file ONLY.
-  * While `data` folder is empty on the repo, you need the file 'data_release.csv' to run the code. The file can be downloaded from [BOOSTR: A Dataset for Accelerator Control Systems (Partial Release 2020)](https://zenodo.org/record/4088982#.YhAB-ZPMJAc)
-***
+
+## Run Training
+* ```python run_training.py```
+* you may configer ```globals.py``` after consulting the appendix to train the surrogate model and the agent. 
+By default you train the FP32 agent but you may change the ```ARCH_TYPE``` to ```MLP_Quantized' to train the quantized model.
 
 ## Appendix:
 
-_Following variables in the `globals.py` file are used to homogenize the training spanning across different files but using shared variables._
+The following variables in the `globals.py` file are used to homogenize the training spanning across different files but using shared variables
 
 | Variable              | Purpose                                                                                                                                    |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
