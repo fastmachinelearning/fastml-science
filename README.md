@@ -32,12 +32,20 @@ python3 train.py -c float_baseline.yml
 ```
 ![Alt text](jet-classify/model/float_baseline/keras_roc_curve.png?raw=true "Float Baseline ROC Curve")
 
+`Model test accuracy = 0.766`
+
+`Model test weighted average AUC = 0.943`
+
 ### Training Quantized Baseline:
 
 ```
-python3 train.py -c float_baseline.yml
+python3 train.py -c quantized_baseline.yml
 ```
 ![Alt text](jet-classify/model/quantized_baseline/keras_roc_curve.png?raw=true "Quantized Baseline ROC Curve")
+
+`Model test accuracy = 0.764`
+
+`Model test weighted average AUC = 0.941`
 
 # beam-control
 WIP
