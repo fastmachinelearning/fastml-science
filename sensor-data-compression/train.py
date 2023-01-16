@@ -708,7 +708,7 @@ def main(args):
         input_calQ  = np.array([input_calQ[i]*(val_max[i] if args.rescaleInputToMax else val_sum[i]) for i in range(0,len(input_calQ)) ])  # shape = (N,48) in CALQ order                                
         output_calQ =  unnormalize(output_calQ_fr.copy(), val_max if args.rescaleOutputToMax else val_sum, rescaleOutputToMax=args.rescaleOutputToMax)
 
-        isRTL = True
+        isRTL = False
         if isRTL:
             _logger.info('Save CSV for RTL verification')
             N_csv= (args.nCSV if args.nCSV>=0 else input_Q.shape[0]) # about 80k                                                                                                                          
@@ -748,11 +748,6 @@ def main(args):
 
     # compare the relative performance of each model
     compare_models(models,perf_dict,eval_dict,args)
-    
-    os.chdir(orig_dir)
-    
-    plot_eta(args.odir,args.models,phys_val_input)
-
 
 if __name__ == '__main__':
     args = parser.parse_args()
