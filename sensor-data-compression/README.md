@@ -1,7 +1,10 @@
 # Ecoder
 Training ECON-T autoencoder model
+![model](./sensor_data_compression_model.drawio.png)
 
 This repo is based on the work done here https://github.com/cmantill/Ecoder which was accomplished using the original repo found here (https://github.com/kakwok/Ecoder).
+
+
 
 ## Setup
 
@@ -12,28 +15,29 @@ source setup.sh # if you do not have the ecoder-env environment (i.e. if it is y
 conda activate ecoder-env
 ```
 
-Clone the repository (or your own fork):
-```
-git clone git@github.com:cmantill/Ecoder.git
-cd Ecoder/
-``` 
-
 ## Input data
 
 Get data from Cernbox
 ```
-mkdir data/{nELinks_5}
-
+mkdir data/nELinks_5
+```
+Download the data and place it in `data/nELinks_5`
 cernbox: https://cernbox.cern.ch/index.php/s/YpAWu24aw6EaBk7
 
 ## Training ECON-T autoencoder
-
-The default model uses the telescope loss, we can train the model as such:
-
+By default model, the autoencoder uses telescope loss, we can train the model as such:
+### Train Float Point model
 ```
 python3 train.py -i data/nElinks_5/  -o ./output/ --epoch 96 --AEonly 1 --nELinks 5 --noHeader --models 8x8_c8_S2_tele
+```
+### Train Quantized model
+The quantized model uses the same loss function and has 5 bit weights (sign bit not included)
+```
+python3 train.py -i data/nElinks_5/  -o ./output/ --epoch 96 --AEonly 1 --nELinks 5 --noHeader --models 8x8_c8_S2_qK
+```
+CNN model with 8x8 arranged inputs, 3x3 kernel dimensions and 8 filters, and a stride size of 2x2, using the telescope function as a loss function.
 
-here:
+The arguments are defined as:
 - `-i data/nElinks_5/`: Input directory or input file. Here we have an example of the input training. In this case the .csv files are already shuffled and they do not contain headers. So the `--noHeader` option is needed.
 - `-o ./output/`: Output directory. Here we have `output` as an example of the output directory. Change this to something more meaninful for future tests.
 - `--epoch 96`: this represents the number of epochs to train the model. We usually train for ~100 epochs.
@@ -62,11 +66,6 @@ Other possible arguments are:
 - `--noHeader`: Input data has no header
 - `--models`: Models to run.
 
-The default model is:
-- 8x8_c8_S2_tele: i.e. a CNN model with 8x8 arranged inputs, 3x3 kernel dimensions and 8 filters, and a stride size of 2x2, using the telescope function as a loss function.
-
-You can train the quantized model by passing `8x8_c8_S2_qK` which trains a quantized model using qKeras
-
 The model parameters are defined as a dictionary in `networks.py`.
 Other AE models can also be found in this module.
 
@@ -91,4 +90,3 @@ python3 converttoTF.py -o ./graphs/ -i <decoder_model_keras>.json --outputGraph 
 ### convert the encoder model
 python3 converttoTF.py -o ./graphs/ -i <encoder_model_keras>.json --outputGraph encoder --outputLayer encoded_vector/Relu 
 ```
-
